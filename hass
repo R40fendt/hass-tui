@@ -1,0 +1,13 @@
+#!/bin/bash
+# Home Assistant TUI wrapper script
+# Activates venv and runs the application
+
+# Project directory (dynamically resolved from script location)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$SCRIPT_DIR"
+
+# Activate the virtual environment
+source "$PROJECT_DIR/venv/bin/activate"
+
+# Run the application with any passed arguments
+python "$PROJECT_DIR/run.py" "$@"

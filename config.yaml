@@ -1,0 +1,57 @@
+# Home Assistant TUI - Project Default Configuration
+# This file contains project-wide defaults
+# User overrides: ~/.config/hass_tui/config.yaml
+
+# Favorite entities (shown first in list with ★)
+favorites: []
+  # - light.living_room
+  # - climate.bedroom
+
+# Display settings
+display:
+  # How to group entities: favorites_first, type, room, state
+  default_group: favorites_first
+
+  # Default filter view: all, favorites, lights, climate, switches
+  default_filter: all
+
+  # Show entity counts in tab bar
+  show_counts: true
+
+# Entity filters - which domains to show
+filters:
+  domains:
+    - light
+    - climate
+    - switch
+    - fan
+    - cover
+    - media_player
+
+# Keybindings (vim-style by default)
+keybindings:
+  # Navigation
+  navigate_down: j
+  navigate_up: k
+  navigate_left: h
+  navigate_right: l
+  navigate_select: l  # Also Enter
+
+  # Jumping
+  jump_top: g g  # Press g twice
+  jump_bottom: G
+
+  # Search
+  search: /
+  search_next: n
+  search_prev: N
+
+  # Actions
+  toggle_favorite: f
+  context_menu: space
+  command_mode: ":"
+
+  # App controls
+  refresh: r
+  reconnect: c
+  quit: q

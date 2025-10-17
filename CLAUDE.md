@@ -1,0 +1,5 @@
+- create a pyhton venv in a ./venv folder and use this
+- be precise and keep documentation as short as possible
+- update the CLAUDE.md file after every change
+- create git commits and prompt me before commiting for every major change
+- be cool.

@@ -235,6 +235,7 @@ class ContextMenu(ModalScreen):
                     self.action_map["t"] = "ctx-light-toggle"
                     yield Button("🔄 [underline]T[/]oggle", id="ctx-light-toggle")
 
+
                 elif domain == "climate":
                     self.action_map["s"] = "ctx-set-temp"
                     yield Button("🌡️ [underline]S[/]et Temp", id="ctx-set-temp", variant="primary")
@@ -1112,15 +1113,39 @@ class HomeAssistantTUI(App):
         table.action_cursor_up()
         self._update_details_from_cursor()
 
-    def action_navigate_left(self) -> None:
+    async def action_navigate_left(self) -> None:
         """Navigate left (h key)."""
-        pass  # Could be used for collapsing panels in future
+        if not self.selected_entity:
+            self.notify("No entity selected", severity="warning")
+            return
 
-    def action_navigate_right(self) -> None:
+        entity_id=self.selected_entity["entity_id"]
+        await self.change_brightness(entity_id,-25.6)
+        self._update_details_from_cursor()
+    
+    async def change_brightness(self,entity_id,step):
+        entity=await self.api.get_state(entity_id)
+        if not "brightness" in entity["attributes"]:
+            return # not a light
+
+        brightness=entity["attributes"]["brightness"] if entity["attributes"]["brightness"]!=None else 0
+        
+        await self.api.turn_on_light(entity_id,brightness=brightness+step)
+
+        # Update Details
+        self.entities[entity_id]=await self.api.get_state(entity_id)
+        self._update_details_from_cursor()
+
+    async def action_navigate_right(self) -> None:
         """Navigate right / select (l key)."""
-        table = self.query_one(EntityList)
-        if table.cursor_row is not None:
-            table.action_select_cursor()
+
+        if not self.selected_entity:
+            self.notify("No entity selected", severity="warning")
+            return
+
+        entity_id=self.selected_entity["entity_id"]
+        await self.change_brightness(entity_id,+25.6)
+
 
     def action_vim_g(self) -> None:
         """Handle 'g' key press for gg (jump to top)."""
